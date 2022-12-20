@@ -3,7 +3,7 @@ def parse(text: str):
 
     special_chars_buffer = ''
     chars_buffer = ''
-    key_buffer = ''
+    key = ''
 
     ignore = False
 
@@ -20,16 +20,16 @@ def parse(text: str):
             if special_chars_buffer == ':=':
                 has_new_line = '\n' in chars_buffer
 
-                if not key_buffer or has_new_line:
+                if not key or has_new_line:
                     if has_new_line:
                         lines = chars_buffer.split('\n')
 
-                        if key_buffer:
-                            parsed_data[key_buffer] = '\n'.join(lines[:-1]).strip().strip('\n')
+                        if key:
+                            parsed_data[key] = '\n'.join(lines[:-1]).strip().strip('\n')
 
-                        key_buffer = lines[-1].strip()
+                        key = lines[-1].strip()
                     else:
-                        key_buffer = chars_buffer.strip()
+                        key = chars_buffer.strip()
 
                     chars_buffer = ''
                 else:
@@ -57,6 +57,6 @@ def parse(text: str):
 
         chars_buffer += char
 
-    parsed_data[key_buffer] = chars_buffer
+    parsed_data[key] = chars_buffer.strip().strip('\n')
 
     return parsed_data
