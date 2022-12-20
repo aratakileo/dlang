@@ -13,28 +13,30 @@ _data = {
 
 
 class TranslatableText:
-    def __init__(self, key: str, *args):
-        self._format_args = args
+    def __init__(self, key: str, *format_args, **format_kwargs):
+        self._format_args = format_args
+        self._format_kwargs = format_kwargs
         self._key = key
 
         self.update_translation()
 
-        if args:
-            self.translated_text = self.translated_text.format(*args)
+        if format_args or format_kwargs:
+            self.translated_text = self.translated_text.format(*format_args, **format_kwargs)
 
     def update_translation(self):
         translated_text = get_translation(self._key)
 
         self.translated_text = self._key if translated_text is None else translated_text
 
-        if self._format_args:
-            self.translated_text = self.translated_text.format(*self._format_args)
+        if self._format_args or self._format_kwargs:
+            self.translated_text = self.translated_text.format(*self._format_args, **self._format_kwargs)
 
-    def format(self, *args):
+    def format(self, *args, **kwargs):
         self._format_args = args
+        self._format_kwargs = kwargs
 
-        if args:
-            self.translated_text = self.translated_text.format(*args)
+        if args or kwargs:
+            self.translated_text = self.translated_text.format(*args, **kwargs)
 
     def __str__(self):
         return self.translated_text
