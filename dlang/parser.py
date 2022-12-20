@@ -25,11 +25,11 @@ def parse(text: str):
                         lines = chars_buffer.split('\n')
 
                         if key_buffer:
-                            parsed_data[key_buffer] = '\n'.join(lines[:-1])
+                            parsed_data[key_buffer] = '\n'.join(lines[:-1]).strip().strip('\n')
 
-                        key_buffer = lines[-1]
+                        key_buffer = lines[-1].strip()
                     else:
-                        key_buffer = chars_buffer
+                        key_buffer = chars_buffer.strip()
 
                     chars_buffer = ''
                 else:
