@@ -39,14 +39,24 @@ def set_current_lang(lang: str):
         return
 
     global _current_lang
-    _current_lang = lang
+
+    if lang in _data:
+        _current_lang = lang
+        return
+
+    for lang_key in _data:
+        if lang_key.lower().startswith(lang.lower()):
+            _current_lang = lang_key
 
 
 def get_lang_data(lang: str = ...):
     if lang is ...:
         lang = _current_lang
 
-    for lang_key in _data.keys():
+    if lang in _data:
+        return _data[lang]
+
+    for lang_key in _data:
         if lang_key.lower().startswith(lang.lower()):
             return _data[lang_key]
 
