@@ -1,1 +1,1 @@
-from dlang.localization import *
+from dlang.translation import *

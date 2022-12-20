@@ -12,7 +12,10 @@ _data = {
 }
 
 
-def load_localizations_from(path: str):
+class TranslatableText
+
+
+def load_translations_from(path: str):
     if not isdir(path):
         return
 
@@ -61,7 +64,7 @@ def get_lang_data(lang: str = ...):
             return _data[lang_key]
 
 
-def get_localization(key: str, lang: str = ...):
+def get_translation(key: str, lang: str = ...):
     lang_dict = get_lang_data(lang)
 
     if lang_dict is None or key not in lang_dict:
@@ -72,9 +75,9 @@ def get_localization(key: str, lang: str = ...):
 
 __all__ = (
     'FILE_EXTENSION',
-    'load_localizations_from',
+    'load_translations_from',
     'get_langs_keys',
     'set_current_lang',
     'get_lang_data',
-    'get_localization'
+    'get_translation'
 )
