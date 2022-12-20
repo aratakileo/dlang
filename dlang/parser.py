@@ -51,6 +51,10 @@ def parse(text: str):
 
             continue
 
+        if special_chars_buffer:
+            chars_buffer += special_chars_buffer
+            special_chars_buffer = ''
+
         chars_buffer += char
 
     parsed_data[key_buffer] = chars_buffer
