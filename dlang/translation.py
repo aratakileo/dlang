@@ -12,7 +12,35 @@ _data = {
 }
 
 
-class TranslatableText
+class TranslatableText:
+    def __init__(self, key: str, *args):
+        self._format_args = args
+        self._key = key
+
+        self.update_translation()
+
+        if args:
+            self.translated_text %= args
+
+    def update_translation(self):
+        translated_text = get_translation(self._key)
+
+        self.translated_text = self._key if translated_text is None else translated_text
+
+        if self._format_args:
+            self.translated_text %= self._format_args
+
+    def format(self, *args):
+        self._format_args = args
+
+        if args:
+            self.translated_text %= args
+
+    def __str__(self):
+        return self.translated_text
+
+    def __repr__(self):
+        return f'TranslatableText({repr(self._key)} -> {repr(self.translated_text)})'
 
 
 def load_translations_from(path: str):
@@ -75,6 +103,7 @@ def get_translation(key: str, lang: str = ...):
 
 __all__ = (
     'FILE_EXTENSION',
+    'TranslatableText',
     'load_translations_from',
     'get_langs_keys',
     'set_current_lang',
