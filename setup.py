@@ -12,5 +12,5 @@ setup(
     license='GPL-3.0',
     author='Tea Condemns',
     author_email='tea.condemns@gmail.com',
-    description='Module for convenient localization of the interface'
+    description='Module for convenient localization/translation of the interface'
 )
