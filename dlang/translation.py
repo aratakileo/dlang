@@ -20,7 +20,7 @@ class TranslatableText:
         self.update_translation()
 
         if args:
-            self.translated_text %= args
+            self.translated_text = self.translated_text.format(*args)
 
     def update_translation(self):
         translated_text = get_translation(self._key)
@@ -28,13 +28,13 @@ class TranslatableText:
         self.translated_text = self._key if translated_text is None else translated_text
 
         if self._format_args:
-            self.translated_text %= self._format_args
+            self.translated_text = self.translated_text.format(*self._format_args)
 
     def format(self, *args):
         self._format_args = args
 
         if args:
-            self.translated_text %= args
+            self.translated_text = self.translated_text.format(*args)
 
     def __str__(self):
         return self.translated_text
