@@ -105,12 +105,6 @@ class Translator:
         if old_value != new_value:
             self.load_translation()
 
-    @property
-    def current_translation_data(self):
-        return {} if self._current_lang not in self._all_translation_data else self._all_translation_data[
-            self._current_lang
-        ].copy()
-
     def load_translation(self):
         self._all_translation_data = {}
         paths = self._paths if not self._use_translation_preset else (TRANSLATION_PRESET_PATH, *self._paths)
@@ -134,14 +128,14 @@ class Translator:
 
                     self._all_translation_data[lang_key].update(parse(file.read()))
 
-    def get_translation(self, key: str, *args):
-        if key not in self._current_translation_data:
-            if key not in self._failure_translation_data:
-                return key
+    def get_translation(self, value_key: str, *args):
+        if value_key not in self._current_translation_data:
+            if value_key not in self._failure_translation_data:
+                return value_key
 
-            value = self._failure_translation_data[key]
+            value = self._failure_translation_data[value_key]
         else:
-            value = self._current_translation_data[key]
+            value = self._current_translation_data[value_key]
 
         if not args:
             return value
