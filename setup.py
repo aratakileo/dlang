@@ -12,7 +12,7 @@ setup(
     version='0.0.1',
     packages=[ROOT_DIR],
     url=f'https://github.com/teacondemns/{PACKAGE_NAME}',
-    license='GPL-3.0',
+    license='MIT',
     author='Tea Condemns',
     author_email='tea.condemns@gmail.com',
     description='Module for convenient localization/translation of the interface'
