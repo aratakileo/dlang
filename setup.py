@@ -3,12 +3,15 @@ try:
 except ImportError:
     from distutils.core import setup
 
+
+PACKAGE_NAME = ROOT_DIR = 'dlang'
+
+
 setup(
-    name='dlang',
+    name=PACKAGE_NAME,
     version='0.0.1',
-    packages=['dlang'],
-    url='https://github.com/teacondemns/dlang',
-    install_requires=[],
+    packages=[ROOT_DIR],
+    url=f'https://github.com/teacondemns/{PACKAGE_NAME}',
     license='GPL-3.0',
     author='Tea Condemns',
     author_email='tea.condemns@gmail.com',
