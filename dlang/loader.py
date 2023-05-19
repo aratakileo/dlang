@@ -2,7 +2,7 @@
 # and newlines chars on the right and left
 
 
-def parse(text: str):
+def loads(text: str):
     parsed_dict = {}
 
     special_chars_buffer = ''

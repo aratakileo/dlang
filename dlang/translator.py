@@ -1,7 +1,7 @@
 from dlang.uilang import get_sys_lang_code
 from dlang.resource import RESOURCES_PATH
 from os.path import isdir, isfile
-from dlang.parser import parse
+from dlang.loader import loads
 from typing import Sequence
 from warnings import warn
 from os import listdir
@@ -152,7 +152,7 @@ class Translator:
                     if lang_key not in self._all_translation_data:
                         self._all_translation_data[lang_key] = {}
 
-                    self._all_translation_data[lang_key].update(parse(file.read()))
+                    self._all_translation_data[lang_key].update(loads(file.read()))
 
         self._lang_keys = tuple(self._all_translation_data.keys())
         lang_native_names = []
