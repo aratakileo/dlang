@@ -19,7 +19,7 @@ class Translator:
             path_or_paths: str | Sequence[str],
             current_lang=...,
             failure_lang='en',
-            use_translation_preset=True
+            list_of_used_lang_presets: Sequence[str] = ...
     ):
         global _active_translator
         _active_translator = self
@@ -29,8 +29,10 @@ class Translator:
         else:
             self._paths = *path_or_paths,
 
-        self._all_translation_data = {}
-        self._use_translation_preset = use_translation_preset
+        self._lang_keys: tuple[str] = ()
+        self._lang_native_names: tuple[str] = ()
+        self._all_translation_data: dict[str, dict[str, str]] = {}
+        self._list_of_used_lang_presets = list_of_used_lang_presets
         self._current_lang = self._failure_lang = ''
 
         self.load_translation()
@@ -42,7 +44,7 @@ class Translator:
         self.failure_lang = failure_lang
 
     @property
-    def path_or_paths(self):
+    def path_or_paths(self) -> tuple[str]:
         return self._paths
 
     @path_or_paths.setter
@@ -94,20 +96,28 @@ class Translator:
         self._failure_translation_data = self._all_translation_data[new_value]
 
     @property
-    def use_dlang_preset(self):
-        return self._use_translation_preset
+    def list_of_used_lang_presets(self):
+        return self._list_of_used_lang_presets
 
-    @use_dlang_preset.setter
-    def use_dlang_preset(self, new_value: bool):
-        old_value = self._use_translation_preset
-        self._use_translation_preset = new_value
+    @list_of_used_lang_presets.setter
+    def list_of_used_lang_presets(self, new_value: Sequence[str]):
+        old_value = self._list_of_used_lang_presets
+        self._list_of_used_lang_presets = new_value
 
         if old_value != new_value:
             self.load_translation()
 
+    @property
+    def lang_keys(self):
+        return self._lang_keys
+
+    @property
+    def lang_native_names(self):
+        return self._lang_native_names
+
     def load_translation(self):
         self._all_translation_data = {}
-        paths = self._paths if not self._use_translation_preset else (TRANSLATION_PRESET_PATH, *self._paths)
+        paths = self._paths if not self._list_of_used_lang_presets else (TRANSLATION_PRESET_PATH, *self._paths)
 
         for path in paths:
             if not isdir(path):
@@ -120,13 +130,25 @@ class Translator:
                 if not (isfile(file_path) and file_path.endswith(f'.{FILE_EXTENSION}')):
                     continue
 
-                with open(file_path, 'r', encoding='utf-8') as file:
-                    lang_key = file_path.replace('\\', '/').split('/')[-1].split('.')[-2]
+                lang_key = file_path.replace('\\', '/').split('/')[-1].split('.')[-2]
 
+                if self._list_of_used_lang_presets is not ... and lang_key not in self._list_of_used_lang_presets:
+                    continue
+
+                with open(file_path, 'r', encoding='utf-8') as file:
                     if lang_key not in self._all_translation_data:
                         self._all_translation_data[lang_key] = {}
 
                     self._all_translation_data[lang_key].update(parse(file.read()))
+
+        self._lang_keys = tuple(self._all_translation_data.keys())
+        lang_native_names = []
+
+        for lang_key, lang_data in self._all_translation_data.items():
+            translate_key = 'lang.' + lang_key
+            lang_native_names.append(translate_key if translate_key not in lang_data else lang_data[translate_key])
+
+        self._lang_native_names = *lang_native_names,
 
     def get_translation(self, value_key: str, *args):
         if value_key not in self._current_translation_data:
