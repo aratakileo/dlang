@@ -42,6 +42,9 @@ class Translator:
         if current_lang is ...:
             current_lang = get_sys_lang_code()[:2]
 
+            if current_lang not in self._lang_keys:
+                current_lang = failure_lang
+
         self.current_lang = current_lang
         self.failure_lang = failure_lang
 
