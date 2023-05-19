@@ -9,6 +9,7 @@ from os import listdir
 
 FILE_EXTENSION = 'dlang'
 TRANSLATION_PRESET_PATH = RESOURCES_PATH + 'lang/'
+TRANSLATE_KEY_PREFIX_OF_LANG_NAME = 'lang.'
 
 _active_translator = None
 
@@ -72,7 +73,7 @@ class Translator:
             return
 
         if new_value not in self._all_translation_data:
-            self._current_translation_data = {}
+            self._current_translation_data: dict[str, str] = {}
             return
 
         self._current_translation_data = self._all_translation_data[new_value]
@@ -90,7 +91,7 @@ class Translator:
             return
 
         if new_value not in self._all_translation_data:
-            self._failure_translation_data = {}
+            self._failure_translation_data: dict[str, str] = {}
             return
 
         self._failure_translation_data = self._all_translation_data[new_value]
@@ -127,7 +128,7 @@ class Translator:
             for file_path in listdir(path):
                 file_path = path + '/' + file_path
 
-                if not (isfile(file_path) and file_path.endswith(f'.{FILE_EXTENSION}')):
+                if not (isfile(file_path) and file_path.endswith('.' + FILE_EXTENSION)):
                     continue
 
                 lang_key = file_path.replace('\\', '/').split('/')[-1].split('.')[-2]
@@ -145,12 +146,12 @@ class Translator:
         lang_native_names = []
 
         for lang_key, lang_data in self._all_translation_data.items():
-            translate_key = 'lang.' + lang_key
+            translate_key = TRANSLATE_KEY_PREFIX_OF_LANG_NAME + lang_key
             lang_native_names.append(translate_key if translate_key not in lang_data else lang_data[translate_key])
 
         self._lang_native_names = *lang_native_names,
 
-    def get_translation(self, value_key: str, *args):
+    def get_translation(self, value_key: str, *args, **kwargs):
         if value_key not in self._current_translation_data:
             if value_key not in self._failure_translation_data:
                 return value_key
@@ -159,14 +160,14 @@ class Translator:
         else:
             value = self._current_translation_data[value_key]
 
-        if not args:
+        if not (args or kwargs):
             return value
 
-        return value % args
+        return value.format(*args, **kwargs)
 
 
 def get_translator() -> Translator | None:
     return _active_translator
 
 
-__all__ = 'FILE_EXTENSION', 'Translator', 'get_translator'
+__all__ = 'Translator', 'get_translator'
