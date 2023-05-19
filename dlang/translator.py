@@ -34,6 +34,7 @@ class Translator:
         self._lang_native_names: tuple[str] = ()
         self._all_translation_data: dict[str, dict[str, str]] = {}
         self._list_of_used_lang_presets = list_of_used_lang_presets
+        self._list_of_translatable_objects = []
         self._current_lang = self._failure_lang = ''
 
         self.load_translation()
@@ -78,6 +79,8 @@ class Translator:
 
         self._current_translation_data = self._all_translation_data[new_value]
 
+        self.__update_translatable_objects()
+
     @property
     def failure_lang(self):
         return self._failure_lang
@@ -95,6 +98,8 @@ class Translator:
             return
 
         self._failure_translation_data = self._all_translation_data[new_value]
+
+        self.__update_translatable_objects()
 
     @property
     def list_of_used_lang_presets(self):
@@ -115,6 +120,10 @@ class Translator:
     @property
     def lang_native_names(self):
         return self._lang_native_names
+
+    def __update_translatable_objects(self):
+        for translatable_object in self._list_of_translatable_objects:
+            translatable_object.update_translation()
 
     def load_translation(self):
         self._all_translation_data = {}
@@ -151,19 +160,27 @@ class Translator:
 
         self._lang_native_names = *lang_native_names,
 
-    def get_translation(self, value_key: str, *args, **kwargs):
-        if value_key not in self._current_translation_data:
-            if value_key not in self._failure_translation_data:
-                return value_key
+        self.__update_translatable_objects()
 
-            value = self._failure_translation_data[value_key]
+    def get_translation(self, translate_key: str, *args, **kwargs):
+        if translate_key not in self._current_translation_data:
+            if translate_key not in self._failure_translation_data:
+                return translate_key
+
+            value = self._failure_translation_data[translate_key]
         else:
-            value = self._current_translation_data[value_key]
+            value = self._current_translation_data[translate_key]
 
         if not (args or kwargs):
             return value
 
         return value.format(*args, **kwargs)
+
+    def add_translatable_object(self, translatable_object):
+        self._list_of_translatable_objects.append(translatable_object)
+
+    def remove_translatable_object(self, translatable_object):
+        self._list_of_translatable_objects.remove(translatable_object)
 
 
 def get_translator() -> Translator | None:
