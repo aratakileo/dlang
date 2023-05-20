@@ -37,7 +37,7 @@ class Translator:
         self._list_of_translatable_objects = []
         self._current_lang = self._failure_lang = ''
 
-        self.load_translation()
+        self.load_translations()
 
         if current_lang is ...:
             current_lang = get_sys_lang_code()[:2]
@@ -62,7 +62,7 @@ class Translator:
             self._paths = *new_value,
 
         if self._paths != old_value:
-            self.load_translation()
+            self.load_translations()
 
     @property
     def current_lang(self):
@@ -114,7 +114,7 @@ class Translator:
         self._list_of_used_lang_presets = new_value
 
         if old_value != new_value:
-            self.load_translation()
+            self.load_translations()
 
     @property
     def lang_keys(self):
@@ -128,7 +128,7 @@ class Translator:
         for translatable_object in self._list_of_translatable_objects:
             translatable_object.update_translation()
 
-    def load_translation(self):
+    def load_translations(self):
         self._all_translation_data = {}
         paths = self._paths if not self._list_of_used_lang_presets else (TRANSLATION_PRESET_PATH, *self._paths)
 
