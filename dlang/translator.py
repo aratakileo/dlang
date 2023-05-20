@@ -180,10 +180,12 @@ class Translator:
         return value.format(*args, **kwargs)
 
     def add_translatable_object(self, translatable_object):
-        self._list_of_translatable_objects.append(translatable_object)
+        if translatable_object not in self._list_of_translatable_objects:
+            self._list_of_translatable_objects.append(translatable_object)
 
     def remove_translatable_object(self, translatable_object):
-        self._list_of_translatable_objects.remove(translatable_object)
+        if translatable_object in self._list_of_translatable_objects:
+            self._list_of_translatable_objects.remove(translatable_object)
 
 
 def get_translator() -> Translator | None:
