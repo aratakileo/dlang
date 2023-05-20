@@ -34,7 +34,7 @@ class Translator:
         self._lang_native_names: tuple[str] = ()
         self._all_translation_data: dict[str, dict[str, str]] = {}
         self._list_of_used_lang_presets = list_of_used_lang_presets
-        self._list_of_translatable_objects = []
+        self._translatable_objects = set()
         self._current_lang = self._failure_lang = ''
 
         self.load_translations()
@@ -125,7 +125,7 @@ class Translator:
         return self._lang_native_names
 
     def __update_translatable_objects(self):
-        for translatable_object in self._list_of_translatable_objects:
+        for translatable_object in self._translatable_objects:
             translatable_object.update_translation()
 
     def load_translations(self):
@@ -180,12 +180,12 @@ class Translator:
         return value.format(*args, **kwargs)
 
     def add_translatable_object(self, translatable_object):
-        if translatable_object not in self._list_of_translatable_objects:
-            self._list_of_translatable_objects.append(translatable_object)
+        if translatable_object not in self._translatable_objects:
+            self._translatable_objects.add(translatable_object)
 
     def remove_translatable_object(self, translatable_object):
-        if translatable_object in self._list_of_translatable_objects:
-            self._list_of_translatable_objects.remove(translatable_object)
+        if translatable_object in self._translatable_objects:
+            self._translatable_objects.remove(translatable_object)
 
 
 def get_translator() -> Translator | None:
