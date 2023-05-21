@@ -18,7 +18,7 @@ class Translator:
     def __init__(
             self,
             path_or_paths: str | Sequence[str],
-            current_lang=...,
+            current_lang: str = ...,
             failure_lang='en',
             list_of_used_lang_presets: Sequence[str] = ...
     ):
