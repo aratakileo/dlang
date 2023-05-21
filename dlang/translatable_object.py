@@ -9,17 +9,17 @@ class TranslatableObject:
 
 
 class TranslatableText(TranslatableObject):
-    def __init__(self, translate_key: str, *args, **kwargs):
+    def __init__(self, translated_value_key: str, *args, **kwargs):
         super().__init__()
 
-        self._translate_key = translate_key
+        self._translated_value_key = translated_value_key
         self._format_args = args
         self._format_kwargs = kwargs
-        self._translated_text = get_translator().get_translation(translate_key, *args, **kwargs)
+        self._translated_text = get_translator().get_translation(translated_value_key, *args, **kwargs)
 
     @property
     def translate_key(self):
-        return self._translate_key
+        return self._translated_value_key
 
     @property
     def translated_text(self):
@@ -33,7 +33,7 @@ class TranslatableText(TranslatableObject):
 
     def update_translation(self):
         self._translated_text = get_translator().get_translation(
-            self._translate_key,
+            self._translated_value_key,
             *self._format_args,
             **self._format_kwargs
         )
@@ -60,7 +60,7 @@ class TranslatableText(TranslatableObject):
         if len(self._format_args) == 1:
             format_kwargs_segment = format_kwargs_segment[2:]
 
-        return f'{self.__class__.__name__}({repr(self._translate_key)}{format_args_segment}{format_kwargs_segment})'
+        return f'{self.__class__.__name__}({repr(self._translated_value_key)}{format_args_segment}{format_kwargs_segment})'
 
 
 __all__ = 'TranslatableObject', 'TranslatableText'
