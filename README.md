@@ -33,6 +33,7 @@ python3 -m pip install git+https://github.com/teacondemns/dlang.git
 - [Attributes and methods of `dlang.Translator`](#attributes-and-methods-of-dlangtranslator)
 - [Parameters, when initializing `dlang.Translator`](#parameters-when-initializing-dlangtranslator)
 - [Syntax of `.dlang` language files](#syntax-of-dlang-language-files)
+- [About `dlang.TranslatableText`](#about-dlangtranslatabletext)
 
 ### Quick start
 To start using the library tools, it will be enough to write the following code:
@@ -125,7 +126,7 @@ key of the translated value := translated value
 ```
 In this case, the key of the translated value can consist of any characters, except newline characters and special chars: `:`, `=`, `#`. Any characters can be used in the translated value except for special char: `:`, `=`, `#`. That means that the translated value can be multi-line. If there is a need to use special characters in one case or another, then you can just escape them this way: `\:`, `\=`, `\#`. The same applies to the `\ ` symbol: `\\`. Also, if necessary, the newline character can be escaped: `\n`.
 
-Also, the `.dlang` syntax supports single-line comments that the parser will skip:
+The `.dlang` syntax supports single-line comments that the parser will skip:
 ```py
 # your comment is here
 
@@ -134,3 +135,19 @@ key of the translated value := translated value  # or here
 It is also important to note that the language key is taken from the file name, namely:
 - if there is only one dot in the file name to separate the name itself and its extension, then the part of the name up to the dot will be taken as the language key. For example, `ru` will be taken from the name `ru.dlang`
 - if there are several dots in the name, then the text between the last and penultimate dots will be taken as the language key. For example, `es` will be taken from the name `com.my.application.translation.es.dlang`
+
+### About `dlang.TranslatableText`
+If it is necessary that the changes in the translator's parameters are automatically synchronized with the translated text in your interface, then you should use `dlang.TranslatableText`:
+```py
+import dlang
+
+translatable_text = dlang.TranslatableText('lang.jp')
+
+print(translatable_text)
+
+# if you need to see what values were passed during initialization
+print(repr(translatable_text))
+
+# if you need to set formatting args or kwargs
+translatable_text.set_format(1234, some_value='something')
+```
