@@ -9,7 +9,7 @@ from os import listdir
 
 FILE_EXTENSION = 'dlang'
 TRANSLATION_PRESET_PATH = RESOURCES_PATH + 'lang/'
-TRANSLATED_VALUE_KEY_PREFIX_OF_LANG_NAME = 'lang.'
+KEY_PREFIX_OF_TRANSLATED_VALUE_OF_LANG_NAME = 'lang.'
 
 _active_translator = None
 
@@ -158,21 +158,24 @@ class Translator:
         lang_native_names = []
 
         for lang_key, lang_data in self._all_translation_data.items():
-            translated_value_key = TRANSLATED_VALUE_KEY_PREFIX_OF_LANG_NAME + lang_key
-            lang_native_names.append(translated_value_key if translated_value_key not in lang_data else lang_data[translated_value_key])
+            key_of_translated_value = KEY_PREFIX_OF_TRANSLATED_VALUE_OF_LANG_NAME + lang_key
+            lang_native_names.append(
+                key_of_translated_value if key_of_translated_value not in lang_data
+                else lang_data[key_of_translated_value]
+            )
 
         self._lang_native_names = *lang_native_names,
 
         self.__update_translatable_objects()
 
-    def get_translation(self, translated_value_key: str, *args, **kwargs):
-        if translated_value_key not in self._current_translation_data:
-            if translated_value_key not in self._failure_translation_data:
-                return translated_value_key
+    def get_translation(self, key_of_translated_value: str, *args, **kwargs):
+        if key_of_translated_value not in self._current_translation_data:
+            if key_of_translated_value not in self._failure_translation_data:
+                return key_of_translated_value
 
-            value = self._failure_translation_data[translated_value_key]
+            value = self._failure_translation_data[key_of_translated_value]
         else:
-            value = self._current_translation_data[translated_value_key]
+            value = self._current_translation_data[key_of_translated_value]
 
         if not (args or kwargs):
             return value
