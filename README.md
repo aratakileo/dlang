@@ -6,7 +6,7 @@ A convenient flexible python library for implementing a multilingual interface, 
 
 ### Install
 ```
-pip install git+https://github.com/teacondemns/dlang.git
+pip install git+https://github.com/aratakileo/dlang.git
 ```
 
 <details>
@@ -14,7 +14,7 @@ pip install git+https://github.com/teacondemns/dlang.git
   
 
 ```
-py -m pip install git+https://github.com/teacondemns/dlang.git
+py -m pip install git+https://github.com/aratakileo/dlang.git
 ```
 </details>
 
@@ -23,7 +23,7 @@ py -m pip install git+https://github.com/teacondemns/dlang.git
   
 
 ```
-python3 -m pip install git+https://github.com/teacondemns/dlang.git
+python3 -m pip install git+https://github.com/aratakileo/dlang.git
 ```
 </details>
 

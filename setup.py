@@ -12,9 +12,9 @@ setup(
     version='0.0.1',
     packages=[ROOT_DIR, f'{ROOT_DIR}.resource'],
     package_data={ROOT_DIR: ['resource/*/*']},
-    url=f'https://github.com/teacondemns/{PACKAGE_NAME}',
+    url=f'https://github.com/aratakileo/{PACKAGE_NAME}',
     license='MIT',
-    author='Tea Condemns',
-    author_email='tea.condemns@gmail.com',
+    author='Arataki Leo',
+    author_email='aratakileo@gmail.com',
     description='Module for convenient localization/translation of the interface'
 )
